@@ -25,12 +25,34 @@ class _EnginState extends State<Engin> {
           ),
           Expanded(
             child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
               decoration: BoxDecoration(
                 color: APPSTYLE.WHITE_COLOR,
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(10),
                   bottomLeft: Radius.circular(10),
                 ),
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(15),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: APPSTYLE.DESABLE_COLOR,
+                        ),
+                        child: Text(
+                          'Tout',
+                          style: GoogleFonts.montserrat(
+                            fontSize: 13,
+                          ),
+                        ),
+                      )
+                    ],
+                  )
+                ],
               ),
             ),
           ),
@@ -54,7 +76,7 @@ class _EnginState extends State<Engin> {
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(
             child: Text(

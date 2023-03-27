@@ -40,10 +40,7 @@ class _ClientPageState extends State<ClientPage> {
 
   Widget _infoBar() {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 30,
-        vertical: 10,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
       decoration: BoxDecoration(
         color: APPSTYLE.WHITE_COLOR,
         borderRadius: const BorderRadius.only(
@@ -53,7 +50,7 @@ class _ClientPageState extends State<ClientPage> {
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(
             child: Text(
