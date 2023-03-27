@@ -39,14 +39,10 @@ class _LoginPageState extends State<LoginPage> {
                 borderRadius: BorderRadius.circular(10),
                 boxShadow: <BoxShadow>[
                   BoxShadow(
-                    color: APPSTYLE.SHADOW_COLOR,
-                    offset: const Offset(-3, 7),
-                    blurRadius: 7,
-                  ),
-                  BoxShadow(
-                    color: APPSTYLE.SHADOW_COLOR.withOpacity(.3),
-                    offset: const Offset(3, -7),
-                    blurRadius: 7,
+                    color: APPSTYLE.BLACK_COLOR.withOpacity(.2),
+                    offset: const Offset(0.0, 0.0),
+                    blurRadius: 6,
+                    spreadRadius: 2,
                   ),
                 ],
               ),

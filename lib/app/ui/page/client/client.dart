@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:transport_app/app/ui/page/client/add_client.dart';
 import 'package:transport_app/app/ui/shared/style.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -106,7 +107,11 @@ class _ClientPageState extends State<ClientPage> {
               ),
               20.widthBox,
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: ((context) => const AddClient()));
+                },
                 child: Container(
                   padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
