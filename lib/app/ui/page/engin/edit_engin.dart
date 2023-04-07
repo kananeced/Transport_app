@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import 'package:transport_app/app/ui/shared/style.dart';
 import 'package:transport_app/app/ui/shared/utils/pop_up_model.dart';
 import 'package:transport_app/app/ui/shared/widget.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class AddEngin extends StatefulWidget {
-  const AddEngin({super.key});
+class EditEngin extends StatefulWidget {
+  const EditEngin({super.key});
 
   @override
-  State<AddEngin> createState() => _AddEnginState();
+  State<EditEngin> createState() => _EditEnginState();
 }
 
-class _AddEnginState extends State<AddEngin> {
+class _EditEnginState extends State<EditEngin> {
   String? dropDownValue =
       "Voiture"; // this will be removed while we will create the controller view
   List<String> dropDownValues = ["Voiture", "Bus"];
@@ -21,7 +20,7 @@ class _AddEnginState extends State<AddEngin> {
   @override
   Widget build(BuildContext context) {
     return PoppupModel(
-      text: 'Ajout Engin',
+      text: 'Edit Engin',
       child: SizedBox(
         height: MediaQuery.of(context).size.height - 200,
         child: Column(
@@ -149,12 +148,12 @@ class _AddEnginState extends State<AddEngin> {
               children: [
                 Expanded(
                   child: Text(
-                    '*Insertion  d\'un Engin',
+                    '*Modifier un Engin',
                     style: APPSTYLE.body2,
                   ),
                 ),
                 CustomButton(
-                  title: 'Enregistrer',
+                  title: 'Modifier',
                   textColor: APPSTYLE.WHITE_COLOR,
                   backgroundColor: APPSTYLE.PRIMARY_COLOR_LIGH,
                   width: 220,

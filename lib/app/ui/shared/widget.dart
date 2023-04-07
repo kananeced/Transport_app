@@ -27,7 +27,7 @@ class TextForm extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
-          color: APPSTYLE.DESABLE_COLOR,
+          color: APPSTYLE.BORDER_COLOR,
         ),
       ),
       child: TextField(
