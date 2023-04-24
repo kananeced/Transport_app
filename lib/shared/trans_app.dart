@@ -1,7 +1,8 @@
 import 'package:fluent_ui/fluent_ui.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:transport_app/app/ui/auth/Login/login.dart';
+
+import 'package:transport_app/app/ui/home/app_home.dart';
 import 'package:transport_app/app/ui/shared/routes.dart';
 
 import 'package:transport_app/app/ui/shared/style.dart';
@@ -22,7 +23,7 @@ class App extends StatelessWidget {
         ),
         title: "Community",
         routes: routes,
-        home: const LoginPage(),
+        home: const AppHome(),
       ),
     );
   }

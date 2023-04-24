@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:transport_app/app/services/http/interceptor.dart';
+
+import 'package:transport_app/service/http/interceptor.dart';
 
 class DioApi {
   late final Dio dio = createDio();
