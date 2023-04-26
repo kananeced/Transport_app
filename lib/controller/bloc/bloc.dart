@@ -44,5 +44,17 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         ERROR(dueTo: e.toString());
       }
     });
+    on<POSTENGINS>(
+      (event, emit) async {
+        emit(const LOADING());
+        try {
+          await postEngi(data: event.data);
+          emit(const SUCCESS());
+        } on Exception catch (e) {
+          ERROR(dueTo: e.toString());
+          debugPrint(e.toString());
+        }
+      },
+    );
   }
 }

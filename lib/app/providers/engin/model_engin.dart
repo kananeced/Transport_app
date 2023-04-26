@@ -1,27 +1,19 @@
 class ResultEngin {
-  List<Engin>? data;
+  List<Car>? data;
 
   ResultEngin({this.data});
 
   ResultEngin.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
-      data = <Engin>[];
+      data = <Car>[];
       json['data'].forEach((v) {
-        data!.add(Engin.fromJson(v));
+        data!.add(Car.fromJson(v));
       });
     }
   }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {};
-    if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
 }
 
-class Engin {
+class Car {
   String? id;
   String? marque;
   String? nemeroplaque;
@@ -29,17 +21,19 @@ class Engin {
   String? model;
   String? numerochassie;
   String? categorieId;
+  String? designation;
 
-  Engin(
+  Car(
       {this.id,
       this.marque,
       this.nemeroplaque,
       this.couleur,
       this.model,
       this.numerochassie,
-      this.categorieId});
+      this.categorieId,
+      this.designation});
 
-  Engin.fromJson(Map<String, dynamic> json) {
+  Car.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     marque = json['marque'];
     nemeroplaque = json['nemeroplaque'];
@@ -47,18 +41,6 @@ class Engin {
     model = json['model'];
     numerochassie = json['numerochassie'];
     categorieId = json['categorie_id'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {};
-
-    data['id'] = id;
-    data['marque'] = marque;
-    data['nemeroplaque'] = nemeroplaque;
-    data['couleur'] = couleur;
-    data['model'] = model;
-    data['numerochassie'] = numerochassie;
-    data['categorie_id'] = categorieId;
-    return data;
+    designation = json['designation'];
   }
 }

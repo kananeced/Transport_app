@@ -19,3 +19,8 @@ class Login implements AppEvent {
 }
 
 class GETTENGIN implements AppEvent {}
+
+class POSTENGINS implements AppEvent {
+  final Map<String, dynamic>? data;
+  POSTENGINS({required this.data});
+}

@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:transport_app/app/providers/engin/model_engin.dart';
 import 'package:transport_app/app/ui/page/engin/add_engin.dart';
-import 'package:transport_app/app/ui/page/engin/detail_engin.dart';
-import 'package:transport_app/app/ui/page/engin/edit_engin.dart';
+import 'package:transport_app/app/ui/page/engin/all_engin.dart';
+
 import 'package:transport_app/app/ui/shared/style.dart';
+import 'package:transport_app/controller/bloc/bloc.dart';
+import 'package:transport_app/controller/bloc/event.dart';
+import 'package:transport_app/controller/bloc/state.dart';
 
 import 'package:velocity_x/velocity_x.dart';
 
@@ -16,6 +21,17 @@ class Engin extends StatefulWidget {
 }
 
 class _EnginState extends State<Engin> {
+  List<Car>? engin = [];
+  AppBloc? bloc;
+  @override
+  void initState() {
+    bloc = AppBloc();
+    bloc!.add(
+      GETTENGIN(),
+    );
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,141 +120,71 @@ class _EnginState extends State<Engin> {
                       ],
                     ),
                   ),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          top: 20,
-                          right: 30,
-                          left: 10,
-                          bottom: 5,
-                        ),
-                        child: Wrap(
-                          spacing: 10,
-                          runSpacing: 12,
-                          children: List.generate(
-                            15,
-                            (index) => cardVehicule(),
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
+                  BlocBuilder<AppBloc, AppState>(
+                      bloc: bloc,
+                      builder: (context, state) {
+                        if (state is LOADING) {
+                          return const CircularProgressIndicator();
+                        } else if (state is SUCCESS) {
+                          engin = state.value;
+                          return Expanded(
+                            child: SingleChildScrollView(
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                  top: 20,
+                                  right: 30,
+                                  left: 10,
+                                  bottom: 5,
+                                ),
+                                child: Wrap(
+                                  spacing: 10,
+                                  runSpacing: 12,
+                                  children: List.generate(
+                                    engin!.length,
+                                    (index) => AllEngin(
+                                      bloc: bloc,
+                                      engin: engin![index],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        } else if (state is ERROR) {
+                          Column(
+                            children: [
+                              Text(state.dueTo.toString()),
+                              InkWell(
+                                onTap: (() {
+                                  bloc!.add(
+                                    GETTENGIN(),
+                                  );
+                                }),
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 15),
+                                  decoration: BoxDecoration(
+                                      color: Colors.grey,
+                                      borderRadius: BorderRadius.circular(4)),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "Reessayer",
+                                    style: TextStyle(
+                                      color: APPSTYLE.BLACK_COLOR,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        }
+                        return const SizedBox.shrink();
+                      })
                 ],
               ),
             ),
           ),
         ]),
-      ),
-    );
-  }
-
-  Widget cardVehicule() {
-    return InkWell(
-      onTap: () {
-        showDialog(
-            context: context,
-            barrierColor: Colors.transparent,
-            builder: ((context) => const DetailEngin()));
-      },
-      child: Container(
-        height: 150,
-        width: 260,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: APPSTYLE.WHITE_COLOR,
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-              color: APPSTYLE.ON_CONTAINER_COLOR.withOpacity(.7),
-              offset: const Offset(3, 3),
-              blurRadius: 6,
-              spreadRadius: 2,
-            ),
-          ],
-        ),
-        child: Stack(
-          children: [
-            Row(children: [
-              Container(
-                width: 120,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("assets/svg/car.png"),
-                    fit: BoxFit.contain,
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    left: 8,
-                    right: 8,
-                    top: 8,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Taxi Voiture',
-                        style: GoogleFonts.montserrat(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      10.heightBox,
-                      Expanded(
-                        child: Text(
-                          'Le lorem ipsum est, en imprimerie, une suite de mots sans signification utilisée à titre provisoire pour calibrer',
-                          maxLines: 3,
-                          overflow: TextOverflow.ellipsis,
-                          style: GoogleFonts.montserrat(
-                            fontSize: 12,
-                          ),
-                        ),
-                      ),
-                      Text(
-                        'Voiture',
-                        style: GoogleFonts.montserrat(
-                          fontSize: 12,
-                        ),
-                      ),
-                      10.heightBox,
-                    ],
-                  ),
-                ),
-              ),
-            ]),
-            Positioned(
-              bottom: 10,
-              left: 220,
-              child: modelAction(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    barrierColor: Colors.transparent,
-                    builder: ((context) => const EditEngin()),
-                  );
-                },
-                icon: Iconsax.edit,
-                color: APPSTYLE.PRIMARY_COLOR_LIGH,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget modelAction({
-    Function()? onTap,
-    IconData? icon,
-    Color? color,
-  }) {
-    return InkWell(
-      onTap: onTap,
-      child: Icon(
-        icon,
-        color: color,
       ),
     );
   }

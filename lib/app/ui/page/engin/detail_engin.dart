@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:transport_app/app/providers/engin/model_engin.dart';
 
 import 'package:transport_app/app/ui/shared/style.dart';
 import 'package:transport_app/app/ui/shared/utils/pop_up_model_detail.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class DetailEngin extends StatefulWidget {
-  const DetailEngin({super.key});
+  final Car? engin;
+  const DetailEngin({super.key, this.engin});
 
   @override
   State<DetailEngin> createState() => _DetailEnginState();
@@ -36,7 +38,7 @@ class _DetailEnginState extends State<DetailEngin> {
             ),
             10.heightBox,
             Text(
-              'Voiture',
+              widget.engin!.designation!,
               style: GoogleFonts.montserrat(
                 fontSize: 13,
                 fontWeight: FontWeight.bold,
@@ -49,7 +51,7 @@ class _DetailEnginState extends State<DetailEngin> {
             ),
             10.heightBox,
             Text(
-              'Toyota',
+              widget.engin!.marque!,
               style: GoogleFonts.montserrat(
                 fontSize: 13,
                 fontWeight: FontWeight.bold,
@@ -62,7 +64,7 @@ class _DetailEnginState extends State<DetailEngin> {
             ),
             10.heightBox,
             Text(
-              'Noah',
+              widget.engin!.model!,
               style: GoogleFonts.montserrat(
                 fontSize: 13,
                 fontWeight: FontWeight.bold,
@@ -75,7 +77,7 @@ class _DetailEnginState extends State<DetailEngin> {
             ),
             10.heightBox,
             Text(
-              '00889YGY',
+              widget.engin!.nemeroplaque!,
               style: GoogleFonts.montserrat(
                 fontSize: 13,
                 fontWeight: FontWeight.bold,
@@ -88,7 +90,7 @@ class _DetailEnginState extends State<DetailEngin> {
             ),
             10.heightBox,
             Text(
-              '00889YGY',
+              widget.engin!.numerochassie!,
               style: GoogleFonts.montserrat(
                 fontSize: 13,
                 fontWeight: FontWeight.bold,
