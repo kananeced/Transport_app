@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:transport_app/app/ui/client/client.dart';
+import 'package:transport_app/app/ui/dashbord/dashboard.dart';
+import 'package:transport_app/app/ui/engin/engin.dart';
 import 'package:transport_app/app/ui/home/app_architecture.dart';
 import 'package:transport_app/app/ui/home/shared.dart';
-import 'package:transport_app/app/ui/page/client/client.dart';
-import 'package:transport_app/app/ui/page/dashbord/dashboard.dart';
-import 'package:transport_app/app/ui/page/engin/engin.dart';
+
 import 'package:transport_app/app/ui/shared/style.dart';
 
 import 'package:transport_app/controller/bloc/bloc.dart';

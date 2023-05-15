@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:transport_app/app/providers/engin/engin_repository.dart';
-import 'package:transport_app/app/providers/engin/model_engin.dart';
-import 'package:transport_app/app/providers/user/user_repo.dart';
+import 'package:transport_app/app/ui/engin/engin_repo/engin_repository.dart';
+import 'package:transport_app/app/ui/engin/engin_repo/model_engin.dart';
+import 'package:transport_app/app/ui/login/user_repository/user_repo.dart';
 
 import 'package:transport_app/controller/bloc/event.dart';
 import 'package:transport_app/controller/bloc/state.dart';
@@ -20,7 +20,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
             username: event.username,
             password: event.password,
           );
-
+          print(response);
           emit(
             SUCCESS(value: response),
           );
@@ -33,8 +33,10 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       emit(const LOADING());
       try {
         var response = await getEngin();
+        print(response.data);
+        print(response.data.toString());
         ResultEngin resultEngin = ResultEngin.fromJson(response.data);
-        debugPrint(resultEngin.data.toString());
+
         emit(
           SUCCESS(
             value: resultEngin.data!,

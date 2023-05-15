@@ -5,11 +5,14 @@ import 'package:transport_app/app/ui/shared/style.dart';
 import 'package:transport_app/controller/bloc/state.dart';
 import 'package:velocity_x/velocity_x.dart';
 
+bool? hasSubmit = false;
+
 class TextForm extends StatelessWidget {
   final String? hint;
   final TextEditingController? controller;
   final double? width;
   final int? maxLine;
+  final bool? hasSubmited;
 
   const TextForm({
     super.key,
@@ -17,17 +20,19 @@ class TextForm extends StatelessWidget {
     this.controller,
     this.width,
     this.maxLine,
+    this.hasSubmited,
   });
 
   @override
   Widget build(BuildContext context) {
+    bool validation = hasSubmited == true && controller!.text.trim().isEmpty;
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       width: width,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
-          color: APPSTYLE.BORDER_COLOR,
+          color: validation ? APPSTYLE.RED_COLOR : APPSTYLE.BORDER_COLOR,
         ),
       ),
       child: TextField(
@@ -54,7 +59,9 @@ class TextForm extends StatelessWidget {
 class TextFormPassWord extends StatefulWidget {
   final String? hint;
   final TextEditingController? controller;
-  const TextFormPassWord({super.key, this.hint, this.controller});
+  final bool? hasSubmited;
+  const TextFormPassWord(
+      {super.key, this.hint, this.controller, this.hasSubmited});
 
   @override
   State<TextFormPassWord> createState() => _TextFormPassWordState();
@@ -64,12 +71,14 @@ class _TextFormPassWordState extends State<TextFormPassWord> {
   ValueNotifier<bool> isObscure = ValueNotifier(true);
   @override
   Widget build(BuildContext context) {
+    bool validation =
+        widget.hasSubmited == true && widget.controller!.text.trim().isEmpty;
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
-          color: APPSTYLE.DESABLE_COLOR,
+          color: validation ? APPSTYLE.RED_COLOR : APPSTYLE.BORDER_COLOR,
         ),
       ),
       child: ValueListenableBuilder(

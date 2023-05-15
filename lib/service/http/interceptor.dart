@@ -20,6 +20,7 @@ class ApiInterceptor extends Interceptor {
           case 401:
             throw UnauthorizedException(err.requestOptions);
           case 404:
+            print(err.error);
             throw NotFoundException(err.requestOptions);
           case 409:
             throw ConflictException(err.requestOptions);
