@@ -3,7 +3,8 @@ import 'package:cherry_toast/resources/arrays.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:transport_app/app/ui/engin/engin_repo/engin_controller.dart';
+import 'package:transport_app/app/ui/engin/controller/engin_controller.dart';
+
 import 'package:transport_app/app/ui/shared/style.dart';
 import 'package:transport_app/app/ui/shared/utils/pop_up_model.dart';
 import 'package:transport_app/app/ui/shared/widget.dart';
@@ -11,14 +12,14 @@ import 'package:transport_app/controller/bloc/bloc.dart';
 import 'package:transport_app/controller/bloc/state.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class EditEngin extends StatefulWidget {
-  const EditEngin({super.key});
+class AddEngin extends StatefulWidget {
+  const AddEngin({super.key});
 
   @override
-  State<EditEngin> createState() => _EditEnginState();
+  State<AddEngin> createState() => _AddEnginState();
 }
 
-class _EditEnginState extends State<EditEngin> {
+class _AddEnginState extends State<AddEngin> {
   final EnginController _enginController = EnginController();
   AppBloc? bloc;
   String? dropDownValue =
@@ -36,11 +37,17 @@ class _EditEnginState extends State<EditEngin> {
       if (_enginController.validation) {
         _enginController.submitPostEngin(bloc!);
       }
+      setState(() {
+        hasSubmit = true;
+      });
     } else {
       _enginController.categorie = "2";
       if (_enginController.validation) {
         _enginController.submitPostEngin(bloc!);
       }
+      setState(() {
+        hasSubmit = true;
+      });
     }
   }
 
@@ -142,6 +149,7 @@ class _EditEnginState extends State<EditEngin> {
                               TextForm(
                                 controller: _enginController.marque,
                                 hint: 'Entre la marque',
+                                hasSubmited: hasSubmit,
                               ),
                               20.heightBox,
                               Text(
@@ -152,6 +160,7 @@ class _EditEnginState extends State<EditEngin> {
                               TextForm(
                                 controller: _enginController.model,
                                 hint: 'Entre le model',
+                                hasSubmited: hasSubmit,
                               ),
                               20.heightBox,
                               Row(
@@ -171,6 +180,7 @@ class _EditEnginState extends State<EditEngin> {
                                               _enginController.nemeroplaque,
                                           width: 220,
                                           hint: '000 0000',
+                                          hasSubmited: hasSubmit,
                                         ),
                                       ],
                                     ),
@@ -189,6 +199,7 @@ class _EditEnginState extends State<EditEngin> {
                                             _enginController.numerochassie,
                                         width: 220,
                                         hint: '000 0000',
+                                        hasSubmited: hasSubmit,
                                       ),
                                     ],
                                   ),

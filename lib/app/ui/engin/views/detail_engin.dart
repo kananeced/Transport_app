@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:transport_app/app/ui/engin/engin_repo/model_engin.dart';
+import 'package:transport_app/app/ui/engin/model/model_engin.dart';
 
 import 'package:transport_app/app/ui/shared/style.dart';
 import 'package:transport_app/app/ui/shared/utils/pop_up_model_detail.dart';
@@ -38,7 +38,7 @@ class _DetailEnginState extends State<DetailEngin> {
             ),
             10.heightBox,
             Text(
-              widget.engin!.designation!,
+              widget.engin!.category!.designation!,
               style: GoogleFonts.montserrat(
                 fontSize: 13,
                 fontWeight: FontWeight.bold,
@@ -77,7 +77,7 @@ class _DetailEnginState extends State<DetailEngin> {
             ),
             10.heightBox,
             Text(
-              widget.engin!.nemeroplaque!,
+              widget.engin!.numeroplaque!,
               style: GoogleFonts.montserrat(
                 fontSize: 13,
                 fontWeight: FontWeight.bold,

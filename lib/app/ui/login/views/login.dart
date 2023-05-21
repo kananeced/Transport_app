@@ -3,7 +3,7 @@ import 'package:cherry_toast/resources/arrays.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:transport_app/app/ui/login/user_repository/user_controller.dart';
+import 'package:transport_app/app/ui/login/controller/user_controller.dart';
 import 'package:transport_app/app/ui/home/app_home.dart';
 
 import 'package:transport_app/app/ui/shared/style.dart';

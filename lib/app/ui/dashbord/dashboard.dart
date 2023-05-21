@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:transport_app/app/ui/engin/model/model_engin.dart';
 
 import 'package:transport_app/app/ui/shared/style.dart';
+import 'package:transport_app/controller/bloc/bloc.dart';
+import 'package:transport_app/controller/bloc/event.dart';
+import 'package:transport_app/controller/bloc/state.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class Dashboard extends StatefulWidget {
@@ -14,6 +19,17 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  List<Car>? engin = [];
+  AppBloc? bloc;
+  @override
+  void initState() {
+    bloc = AppBloc();
+    bloc!.add(
+      GETTENGIN(),
+    );
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,10 +60,18 @@ class _DashboardState extends State<Dashboard> {
                         spacing: 50,
                         runSpacing: 12,
                         children: [
-                          cardDashboard(
-                              nbrCar: '435K',
-                              description: 'des taxis bus',
-                              icon: Iconsax.car),
+                          BlocBuilder<AppBloc, AppState>(
+                              bloc: bloc,
+                              builder: (context, state) {
+                                if (state is SUCCESS) {
+                                  engin = state.value;
+                                  return cardDashboard(
+                                      nbrCar: '${engin!.length}',
+                                      description: 'des taxis bus',
+                                      icon: Iconsax.car);
+                                }
+                                return const SizedBox.shrink();
+                              }),
                           cardDashboard(
                               nbrCar: '435K',
                               description: 'des taxis voiture',
@@ -80,17 +104,31 @@ class _DashboardState extends State<Dashboard> {
                                 10.heightBox,
                                 tabHeaderEngin(context: context),
                                 Expanded(
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      children: List.generate(
-                                        6,
-                                        (index) => someCar(
-                                          index: index,
-                                          context: context,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                                  child: BlocBuilder<AppBloc, AppState>(
+                                      bloc: bloc,
+                                      builder: (context, state) {
+                                        if (state is LOADING) {
+                                          return const Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                        } else if (state is SUCCESS) {
+                                          engin = state.value;
+                                          return SingleChildScrollView(
+                                            child: Column(
+                                              children: List.generate(
+                                                engin!.length,
+                                                (index) => someCar(
+                                                  index: index,
+                                                  context: context,
+                                                  engin: engin![index],
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        }
+
+                                        return const SizedBox.shrink();
+                                      }),
                                 )
                               ],
                             ),
@@ -287,6 +325,7 @@ class _DashboardState extends State<Dashboard> {
   Widget someCar({
     int? index,
     BuildContext? context,
+    final Car? engin,
   }) {
     Widget spacer = 15.widthBox;
     return InkWell(
@@ -321,23 +360,23 @@ class _DashboardState extends State<Dashboard> {
             spacer,
             Expanded(
               flex: 2,
-              child: ligneModel(title: "Voiture ${index + 1}"),
+              child: ligneModel(title: engin!.category!.designation),
             ),
             spacer,
             Expanded(
               flex: 1,
-              child: ligneModel(title: "Toyota"),
+              child: ligneModel(title: engin.marque),
             ),
             spacer,
             Expanded(
               flex: 1,
-              child: ligneModel(title: "Noah"),
+              child: ligneModel(title: engin.model),
             ),
             spacer,
             spacer,
             Expanded(
               flex: 1,
-              child: ligneModel(title: "98878HGYH"),
+              child: ligneModel(title: engin.numeroplaque),
             ),
           ],
         ),

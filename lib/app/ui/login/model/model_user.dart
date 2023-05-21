@@ -1,29 +1,29 @@
-class ResultUser {
+class ResultUsers {
   int? status;
-  List<User>? data;
+  List<Users>? data;
 
-  ResultUser({this.status, this.data});
+  ResultUsers({this.status, this.data});
 
-  ResultUser.fromJson(Map<String, dynamic> json) {
+  ResultUsers.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     if (json['data'] != null) {
-      data = <User>[];
+      data = <Users>[];
       json['data'].forEach((v) {
-        data!.add(User.fromJson(v));
+        data!.add(Users.fromJson(v));
       });
     }
   }
 }
 
-class User {
+class Users {
   String? id;
   String? username;
   String? password;
   String? level;
 
-  User({this.id, this.username, this.password, this.level});
+  Users({this.id, this.username, this.password, this.level});
 
-  User.fromJson(Map<String, dynamic> json) {
+  Users.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     username = json['username'];
     password = json['password'];

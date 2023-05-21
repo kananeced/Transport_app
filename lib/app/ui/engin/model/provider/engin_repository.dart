@@ -5,15 +5,20 @@ import 'package:transport_app/service/http/dio_service.dart';
 
 Future<Response> getEngin() async {
   return await httpGet(
-    endPoint: "http://localhost/projets/ben-tp-php-api/view/enginview.php",
+    endPoint: APIURL.GETENGIN,
   );
 }
 
 Future<Response> postEngi({Map<String, dynamic>? data}) async {
-  var x = await httpPost(
+  return await httpPost(
     endPoint: APIURL.POSTENGIN,
     data: data,
   );
+}
 
-  return x;
+Future<Response> putEngi({Map<String, dynamic>? data}) async {
+  return await httpPut(
+    endPoint: APIURL.POSTENGIN,
+    data: data,
+  );
 }

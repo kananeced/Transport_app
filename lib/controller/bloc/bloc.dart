@@ -1,11 +1,14 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:transport_app/app/ui/engin/engin_repo/engin_repository.dart';
-import 'package:transport_app/app/ui/engin/engin_repo/model_engin.dart';
-import 'package:transport_app/app/ui/login/user_repository/user_repo.dart';
+import 'package:transport_app/app/ui/engin/model/provider/engin_repository.dart';
+import 'package:transport_app/app/ui/engin/model/model_engin.dart';
+
+import 'package:transport_app/app/ui/login/model/provider/user_repo.dart';
 
 import 'package:transport_app/controller/bloc/event.dart';
 import 'package:transport_app/controller/bloc/state.dart';
+import 'package:transport_app/service/prefs/app_prefs.dart';
+import 'package:transport_app/service/prefs/model.dart';
 
 class AppBloc extends Bloc<AppEvent, AppState> {
   AppBloc() : super(INITIALSTATE()) {
@@ -20,12 +23,15 @@ class AppBloc extends Bloc<AppEvent, AppState> {
             username: event.username,
             password: event.password,
           );
-          print(response);
-          emit(
-            SUCCESS(value: response),
-          );
+          ResultUser resultUser = ResultUser.fromJson(response.data);
+          String? token = resultUser.token;
+          AppPref appPref = AppPref();
+          appPref.getUserInfo(token: token);
+          emit(SUCCESS(value: response));
+          print(appPref.getUserInfo());
         } on Exception catch (e) {
           ERROR(dueTo: e.toString());
+          print(e.toString());
         }
       },
     );
@@ -51,6 +57,18 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         emit(const LOADING());
         try {
           await postEngi(data: event.data);
+          emit(const SUCCESS());
+        } on Exception catch (e) {
+          ERROR(dueTo: e.toString());
+          debugPrint(e.toString());
+        }
+      },
+    );
+    on<PUTENGINS>(
+      (event, emit) async {
+        emit(const LOADING());
+        try {
+          await putEngi(data: event.data);
           emit(const SUCCESS());
         } on Exception catch (e) {
           ERROR(dueTo: e.toString());

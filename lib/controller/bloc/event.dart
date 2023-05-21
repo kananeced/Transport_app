@@ -24,3 +24,8 @@ class POSTENGINS implements AppEvent {
   final Map<String, dynamic>? data;
   POSTENGINS({required this.data});
 }
+
+class PUTENGINS implements AppEvent {
+  final Map<String, dynamic>? data;
+  PUTENGINS({required this.data});
+}

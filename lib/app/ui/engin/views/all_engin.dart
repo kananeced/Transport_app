@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:transport_app/app/ui/engin/detail_engin.dart';
-import 'package:transport_app/app/ui/engin/edit_engin.dart';
-import 'package:transport_app/app/ui/engin/engin_repo/model_engin.dart';
+
+import 'package:transport_app/app/ui/engin/model/model_engin.dart';
+import 'package:transport_app/app/ui/engin/views/detail_engin.dart';
+import 'package:transport_app/app/ui/engin/views/edit_engin.dart';
 
 import 'package:transport_app/app/ui/shared/style.dart';
 import 'package:transport_app/controller/bloc/bloc.dart';
+import 'package:transport_app/controller/bloc/event.dart';
 
 import 'package:velocity_x/velocity_x.dart';
 
@@ -68,7 +70,7 @@ class AllEngin extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        engin!.designation!,
+                        engin!.category!.designation!,
                         style: GoogleFonts.montserrat(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -86,7 +88,7 @@ class AllEngin extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        engin!.nemeroplaque!,
+                        engin!.numeroplaque!,
                         style: GoogleFonts.montserrat(
                           fontSize: 12,
                         ),
@@ -102,11 +104,21 @@ class AllEngin extends StatelessWidget {
               left: 220,
               child: modelAction(
                 onTap: () {
+                  selectedIdEngin = engin!.id;
+                  print(selectedIdEngin.toString());
                   showDialog(
                     context: context,
                     barrierColor: Colors.transparent,
-                    builder: ((context) => const EditEngin()),
-                  );
+                    builder: ((context) => EditEngin(
+                          engin: engin,
+                        )),
+                  ).then((value) {
+                    if (value == "success") {
+                      bloc!.add(
+                        GETTENGIN(),
+                      );
+                    }
+                  });
                 },
                 icon: Iconsax.edit,
                 color: APPSTYLE.PRIMARY_COLOR_LIGH,
