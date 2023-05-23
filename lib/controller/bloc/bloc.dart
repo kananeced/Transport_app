@@ -25,10 +25,16 @@ class AppBloc extends Bloc<AppEvent, AppState> {
           );
           ResultUser resultUser = ResultUser.fromJson(response.data);
           String? token = resultUser.token;
-          AppPref appPref = AppPref();
-          appPref.getUserInfo(token: token);
+          User? user = resultUser.user;
+          UserPref userPref = UserPref(
+            token: token,
+            userPerfsInfo: UserPrefInfo(
+              email: user!.email,
+            ),
+          );
+          setUserInfo(userPref);
+          getUserInfo();
           emit(SUCCESS(value: response));
-          print(appPref.getUserInfo());
         } on Exception catch (e) {
           ERROR(dueTo: e.toString());
           print(e.toString());

@@ -32,8 +32,7 @@ Future<Response> httpPut({String? endPoint, var data}) async {
 
 Future<Response> httpGetWithToken(
     {String? endPoint, Map<String, dynamic>? parameters}) async {
-  AppPref appPref = AppPref();
-  String? token = appPref.getUserInfo();
+  String? token = getUserInfo().token;
 
   return await DioApi().dio.get(
         endPoint!,
