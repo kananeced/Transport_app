@@ -2,13 +2,13 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:transport_app/app/ui/engin/model/provider/engin_repository.dart';
 import 'package:transport_app/app/ui/engin/model/model_engin.dart';
+import 'package:transport_app/app/ui/login/model/model_user.dart';
 
 import 'package:transport_app/app/ui/login/model/provider/user_repo.dart';
 
 import 'package:transport_app/controller/bloc/event.dart';
 import 'package:transport_app/controller/bloc/state.dart';
 import 'package:transport_app/service/prefs/app_prefs.dart';
-import 'package:transport_app/service/prefs/model.dart';
 
 class AppBloc extends Bloc<AppEvent, AppState> {
   AppBloc() : super(INITIALSTATE()) {

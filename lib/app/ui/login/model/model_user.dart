@@ -1,32 +1,79 @@
-class ResultUsers {
-  int? status;
-  List<Users>? data;
+class ResultUser {
+  bool? status;
+  User? user;
+  String? message;
+  String? token;
 
-  ResultUsers({this.status, this.data});
+  ResultUser({this.status, this.user, this.message, this.token});
 
-  ResultUsers.fromJson(Map<String, dynamic> json) {
+  ResultUser.fromJson(Map<String, dynamic> json) {
     status = json['status'];
-    if (json['data'] != null) {
-      data = <Users>[];
-      json['data'].forEach((v) {
-        data!.add(Users.fromJson(v));
-      });
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
+    message = json['message'];
+    token = json['token'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = {};
+    data['status'] = status;
+    if (user != null) {
+      data['user'] = user!.toJson();
     }
+    data['message'] = message;
+    data['token'] = token;
+    return data;
   }
 }
 
-class Users {
-  String? id;
-  String? username;
-  String? password;
-  String? level;
+class User {
+  int? id;
+  String? names;
+  String? email;
+  Null? contact;
+  Null? address;
+  Null? sexe;
+  String? compte;
+  Null? emailVerifiedAt;
+  String? createdAt;
+  String? updatedAt;
 
-  Users({this.id, this.username, this.password, this.level});
+  User(
+      {this.id,
+      this.names,
+      this.email,
+      this.contact,
+      this.address,
+      this.sexe,
+      this.compte,
+      this.emailVerifiedAt,
+      this.createdAt,
+      this.updatedAt});
 
-  Users.fromJson(Map<String, dynamic> json) {
+  User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    username = json['username'];
-    password = json['password'];
-    level = json['level'];
+    names = json['names'];
+    email = json['email'];
+    contact = json['contact'];
+    address = json['address'];
+    sexe = json['sexe'];
+    compte = json['compte'];
+    emailVerifiedAt = json['email_verified_at'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = {};
+    data['id'] = id;
+    data['names'] = names;
+    data['email'] = email;
+    data['contact'] = contact;
+    data['address'] = address;
+    data['sexe'] = sexe;
+    data['compte'] = compte;
+    data['email_verified_at'] = emailVerifiedAt;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    return data;
   }
 }

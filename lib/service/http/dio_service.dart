@@ -4,7 +4,6 @@ import 'package:dio/dio.dart';
 
 import 'package:transport_app/service/http/dio_helper.dart';
 import 'package:transport_app/service/prefs/app_prefs.dart';
-import 'package:transport_app/service/prefs/model.dart';
 
 Future<Response> httpGet({String? endPoint}) async {
   return await DioApi().dio.get(endPoint!);
