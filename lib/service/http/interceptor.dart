@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+
+import 'package:transport_app/service/common_error.dart';
 
 @immutable
 class ApiInterceptor extends Interceptor {
@@ -20,19 +24,31 @@ class ApiInterceptor extends Interceptor {
           case 401:
             throw UnauthorizedException(err.requestOptions);
           case 404:
-            print(err.error);
             throw NotFoundException(err.requestOptions);
           case 409:
             throw ConflictException(err.requestOptions);
           case 500:
             throw InternalServerErrorException(err.requestOptions);
+          default:
+            throw ValidationInternalServerErrorException(err.requestOptions,
+                data: err.response!.data);
         }
-        break;
       case DioErrorType.cancel:
         break;
       case DioErrorType.other:
         throw NoInternetConnectionException(requestOptions: err.requestOptions);
     }
+  }
+}
+
+class ValidationInternalServerErrorException extends DioError {
+  final Map<String, dynamic>? data;
+  ValidationInternalServerErrorException(RequestOptions r, {this.data})
+      : super(requestOptions: r);
+
+  @override
+  String toString() {
+    return jsonEncode(data);
   }
 }
 
@@ -44,7 +60,10 @@ class DeadLineExcededException extends DioError {
 
   @override
   String toString() {
-    return "Une erreur s'est produite en essayant de joindre le serveur";
+    ErrorData errormodel = ErrorData(
+        message: "Une erreur s'est produite en essayant de joindre le serveur");
+
+    return jsonEncode(errormodel.toJson());
   }
 }
 
@@ -53,8 +72,10 @@ class BadRequestException extends DioError {
 
   @override
   String toString() {
-    // this will be shown only in debug mode, in release we will change the sentence
-    return "Mauvaise requette | Bad request error";
+    ErrorData errormodel =
+        ErrorData(message: "Mauvaise requette | Bad request error");
+
+    return jsonEncode(errormodel.toJson());
   }
 }
 
@@ -63,7 +84,10 @@ class UnauthorizedException extends DioError {
 
   @override
   String toString() {
-    return "Erreur de l'auhentification au serveur | Unauthorized error";
+    ErrorData error = ErrorData(
+        message: "Erreur de l'auhentification au serveur | Unauthorized error");
+
+    return jsonEncode(error.toJson());
   }
 }
 
@@ -72,18 +96,20 @@ class NotFoundException extends DioError {
 
   @override
   String toString() {
-    // this will be shown only in debug mode, in release we will change the sentence
-    return "Une erreur s'est produite, ceci est du à l'url que vous entrez | not found error";
+    ErrorData error = ErrorData(
+        message:
+            "Une erreur s'est produite, ceci est du à l'url que vous entrez | not found error");
+    return jsonEncode(error.toJson());
   }
 }
 
 class ConflictException extends DioError {
-  ConflictException(RequestOptions r) : super(requestOptions: r);
+  final Map<String, dynamic>? data;
+  ConflictException(RequestOptions r, {this.data}) : super(requestOptions: r);
 
   @override
   String toString() {
-    // this will be shown only in debug mode, in release we will change the sentence
-    return "Une erreur s'est produite, conflit";
+    return jsonEncode(data);
   }
 }
 
@@ -92,8 +118,11 @@ class InternalServerErrorException extends DioError {
 
   @override
   String toString() {
-    // this will be shown only in debug mode, in release we will change the sentence
-    return "Une erreur s'est produite au serveur | internal server error";
+    ErrorData error = ErrorData(
+        message:
+            "Une erreur s'est produite au serveur | internal server error");
+
+    return jsonEncode(error.toJson());
   }
 }
 
@@ -102,6 +131,11 @@ class NoInternetConnectionException extends DioError {
 
   @override
   String toString() {
-    return "Aucune connexion internet";
+    ErrorData error = ErrorData(
+      message:
+          "Aucune connexion internet, veuillez vous connecter puis réessayer",
+    );
+
+    return jsonEncode(error.toJson());
   }
 }

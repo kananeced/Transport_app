@@ -128,6 +128,7 @@ class CustomButton extends StatelessWidget {
   final Color? backgroundColor;
   final Function()? onTap;
   final double? width;
+  final BuildContext? context;
 
   final AppState? state;
   const CustomButton({
@@ -138,6 +139,7 @@ class CustomButton extends StatelessWidget {
     this.onTap,
     this.width,
     this.state,
+    this.context,
   });
 
   @override

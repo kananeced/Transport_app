@@ -46,3 +46,35 @@ Future<Response> httpGetWithToken(
         ),
       );
 }
+
+Future<Response> httpPostWithToken({String? endPoint, var data}) async {
+  // UserPref? userPref;
+  // var token = userPref?.token!.token;
+  String token = getUserInfo().token!;
+  return await DioApi().dio.post(
+        endPoint!,
+        data: data,
+        options: Options(
+          headers: {
+            HttpHeaders.authorizationHeader: 'Bearer $token',
+            'X-Requested-With': 'XMLHttpRequest',
+          },
+        ),
+      );
+} //Mw.dnpeMVd7S6wx-zEunv04ULf7h_wlysxS6DebMhkyCrwuO9O1-eVF0qNO9tAk
+
+Future<Response> httpPutWithToken({String? endPoint, var data}) async {
+  // UserPref? userPref;
+  // var token = userPref?.token!.token;
+  String token = getUserInfo().token!;
+  return await DioApi().dio.put(
+        endPoint!,
+        data: data,
+        options: Options(
+          headers: {
+            HttpHeaders.authorizationHeader: 'Bearer $token',
+            'X-Requested-With': 'XMLHttpRequest',
+          },
+        ),
+      );
+}
