@@ -35,11 +35,10 @@ class AppBloc extends Bloc<AppEvent, AppState> {
             ),
           );
           setUserInfo(userPref);
-          print(userPref.token);
+
           emit(SUCCESS(value: response));
         } on Exception catch (e) {
           ERROR(dueTo: e.toString());
-          print(e.toString());
         }
       },
     );
@@ -79,7 +78,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       (event, emit) async {
         emit(const LOADING());
         try {
-          var response = await postEngi(
+          await postEngi(
             amount: event.amount,
             categoryId: event.categoryId,
             couleur: event.couleur,
@@ -88,7 +87,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
             numerochassie: event.numerochassie,
             numeroplaque: event.numeroplaque,
           );
-          print(response);
+
           emit(const SUCCESS());
         } on Exception catch (e) {
           ERROR(dueTo: e.toString());

@@ -105,7 +105,7 @@ class AllEngin extends StatelessWidget {
               child: modelAction(
                 onTap: () {
                   selectedIdEngin = engin!.id.toString();
-                  print(selectedIdEngin.toString());
+
                   showDialog(
                     context: context,
                     barrierColor: Colors.transparent,

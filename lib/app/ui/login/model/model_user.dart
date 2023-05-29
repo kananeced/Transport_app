@@ -29,11 +29,9 @@ class User {
   int? id;
   String? names;
   String? email;
-  Null? contact;
-  Null? address;
-  Null? sexe;
+
   String? compte;
-  Null? emailVerifiedAt;
+
   String? createdAt;
   String? updatedAt;
 
@@ -41,11 +39,7 @@ class User {
       {this.id,
       this.names,
       this.email,
-      this.contact,
-      this.address,
-      this.sexe,
       this.compte,
-      this.emailVerifiedAt,
       this.createdAt,
       this.updatedAt});
 
@@ -53,11 +47,9 @@ class User {
     id = json['id'];
     names = json['names'];
     email = json['email'];
-    contact = json['contact'];
-    address = json['address'];
-    sexe = json['sexe'];
+
     compte = json['compte'];
-    emailVerifiedAt = json['email_verified_at'];
+
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }
@@ -67,11 +59,9 @@ class User {
     data['id'] = id;
     data['names'] = names;
     data['email'] = email;
-    data['contact'] = contact;
-    data['address'] = address;
-    data['sexe'] = sexe;
+
     data['compte'] = compte;
-    data['email_verified_at'] = emailVerifiedAt;
+
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
     return data;

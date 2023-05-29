@@ -32,7 +32,7 @@ class Client {
   String? address;
   String? sexe;
   String? compte;
-  Null? emailVerifiedAt;
+
   String? createdAt;
   String? updatedAt;
   List<Payments>? payments;
@@ -45,7 +45,6 @@ class Client {
       this.address,
       this.sexe,
       this.compte,
-      this.emailVerifiedAt,
       this.createdAt,
       this.updatedAt,
       this.payments});
@@ -58,7 +57,7 @@ class Client {
     address = json['address'];
     sexe = json['sexe'];
     compte = json['compte'];
-    emailVerifiedAt = json['email_verified_at'];
+
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     if (json['payments'] != null) {
@@ -78,7 +77,7 @@ class Client {
     data['address'] = address;
     data['sexe'] = sexe;
     data['compte'] = compte;
-    data['email_verified_at'] = emailVerifiedAt;
+
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
     if (payments != null) {

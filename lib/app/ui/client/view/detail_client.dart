@@ -48,13 +48,8 @@ class _AllPayement extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                formatDate(DateTime.parse(payments.createdAt!), [
-                  dd,
-                  '-',
-                  mm,
-                  '-',
-                  yyyy,
-                ]),
+                formatDate(DateTime.parse(payments.createdAt!),
+                    [dd, '-', MM, '-', yyyy, '  à  ', HH, ':', nn]),
                 textAlign: TextAlign.end,
                 style: GoogleFonts.montserrat(
                   fontWeight: FontWeight.bold,

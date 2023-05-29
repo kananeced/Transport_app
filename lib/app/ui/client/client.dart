@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:transport_app/app/ui/client/model/client_model.dart';
 import 'package:transport_app/app/ui/client/view/detail_client.dart';
+import 'package:transport_app/app/ui/client/view/pdf/carte.dart';
 
 import 'package:transport_app/app/ui/shared/style.dart';
 import 'package:transport_app/controller/bloc/bloc.dart';
@@ -333,7 +334,16 @@ class _TabClient extends StatelessWidget {
                       icon: Icons.view_agenda),
                   spacer,
                   modelAction(
-                      icon: Icons.print, color: APPSTYLE.PRIMARY_COLOR_DARK),
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return Carte(
+                            client: client,
+                          );
+                        }));
+                      },
+                      icon: Icons.print,
+                      color: APPSTYLE.PRIMARY_COLOR_DARK),
                 ],
               )),
           spacer,
