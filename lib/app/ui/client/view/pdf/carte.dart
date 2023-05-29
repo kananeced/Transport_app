@@ -35,29 +35,50 @@ class Carte extends StatelessWidget {
           ),
         ),
         Expanded(
-            child: Center(
-          child: Row(
-            children: [
-              Column(
-                children: [
-                  _model(cle: "Noms", valeur: client?.names),
-                  _model(cle: "Genre", valeur: client?.sexe),
-                  _model(cle: "Contact", valeur: client?.contact),
-                  _model(cle: "E-mail", valeur: client?.email),
-                  _model(cle: "Adresse", valeur: client?.address),
-                ],
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.width / 2.3,
-                width: MediaQuery.of(context).size.width / 2.3,
-                child: QrImage(
-                  foregroundColor: Colors.white,
-                  data: "${client!.names},${client!.email},${client!.address}",
-                  version: QrVersions.auto,
-                  size: 150,
+            child: SizedBox(
+          child: Center(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(.5),
+              child: Container(
+                height: 200,
+                width: 300,
+                decoration: BoxDecoration(
+                  border:
+                      Border.all(color: APPSTYLE.BLACK_COLOR.withOpacity(.4)),
+                ),
+                child: Center(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _model(cle: "Noms", valeur: client?.names),
+                          _model(cle: "Genre", valeur: client?.sexe),
+                          _model(cle: "Contact", valeur: client?.contact),
+                          _model(cle: "E-mail", valeur: client?.email),
+                        ],
+                      ),
+                      Center(
+                        child: SizedBox(
+                          height: 100,
+                          width: 100,
+                          child: QrImage(
+                            foregroundColor: Colors.black,
+                            data:
+                                "${client!.names},${client!.email},${client!.address}",
+                            version: QrVersions.auto,
+                            size: 150,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ],
+            ),
           ),
         ))
       ]),
@@ -66,6 +87,7 @@ class Carte extends StatelessWidget {
 
   Widget _model({String? cle, String? valeur}) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           cle!,
@@ -73,7 +95,7 @@ class Carte extends StatelessWidget {
             fontSize: 13,
           ),
         ),
-        10.heightBox,
+        // 15.heightBox,
         Text(
           valeur!,
           style: GoogleFonts.montserrat(
