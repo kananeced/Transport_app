@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:transport_app/app/ui/client/model/client_model.dart';
+import 'package:transport_app/app/ui/client/view/detail_client.dart';
 
 import 'package:transport_app/app/ui/shared/style.dart';
+import 'package:transport_app/controller/bloc/bloc.dart';
+import 'package:transport_app/controller/bloc/event.dart';
+import 'package:transport_app/controller/bloc/state.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class ClientPage extends StatefulWidget {
@@ -12,20 +18,15 @@ class ClientPage extends StatefulWidget {
   State<ClientPage> createState() => _ClientPageState();
 }
 
-class _ClientPageState extends State<ClientPage>
-    with SingleTickerProviderStateMixin {
-  TabController? _tabController;
+class _ClientPageState extends State<ClientPage> {
+  AppBloc? bloc;
+  List<Client> client = [];
 
   @override
   void initState() {
+    bloc = AppBloc();
+    bloc!.add(GETTCLIENT());
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _tabController!.dispose();
   }
 
   @override
@@ -50,41 +51,59 @@ class _ClientPageState extends State<ClientPage>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: TabBar(
-                      indicator: BoxDecoration(
-                        color: APPSTYLE.WHITE_COLOR,
-                        border: Border(
-                          bottom: BorderSide(
-                              color: APPSTYLE.PRIMARY_COLOR_LIGH, width: 2),
-                        ),
-                      ),
-                      unselectedLabelColor: Colors.grey,
-                      labelColor: APPSTYLE.BLACK_COLOR,
-                      isScrollable: true,
-                      controller: _tabController,
-                      unselectedLabelStyle:
-                          GoogleFonts.montserrat(fontSize: 12),
-                      labelStyle: GoogleFonts.montserrat(
-                          fontWeight: FontWeight.bold, fontSize: 12),
-                      tabs: const [
-                        Tab(
-                          child: Text("Liste de Client"),
-                        ),
-                        Tab(
-                          child: Text("Historique de paiement"),
-                        ),
-                      ],
-                    ),
-                  ),
+                  tabHeader(context: context),
                   Expanded(
-                    child: TabBarView(
-                      physics: const NeverScrollableScrollPhysics(),
-                      controller: _tabController,
-                      children: const [_TabClient(), _TabHistorique()],
-                    ),
-                  ),
+                      child: BlocBuilder<AppBloc, AppState>(
+                    bloc: bloc,
+                    builder: ((context, state) {
+                      if (state is LOADING) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if (state is SUCCESS) {
+                        client = state.value;
+                        return SingleChildScrollView(
+                          child: Column(
+                            children: List.generate(
+                              client.length,
+                              (index) => _TabClient(
+                                index: index,
+                                client: client[index],
+                              ),
+                            ),
+                          ),
+                        );
+                      } else if (state is ERROR) {
+                        Column(
+                          children: [
+                            Text(state.dueTo.toString()),
+                            InkWell(
+                              onTap: (() {
+                                bloc!.add(
+                                  GETTCLIENT(),
+                                );
+                              }),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 15),
+                                decoration: BoxDecoration(
+                                    color: Colors.grey,
+                                    borderRadius: BorderRadius.circular(4)),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "Reessayer",
+                                  style: TextStyle(
+                                    color: APPSTYLE.BLACK_COLOR,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      }
+                      return const SizedBox.shrink();
+                    }),
+                  ))
                 ],
               ),
             ),
@@ -167,31 +186,6 @@ class _ClientPageState extends State<ClientPage>
       ),
     );
   }
-}
-
-class _TabClient extends StatelessWidget {
-  const _TabClient();
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        tabHeader(context: context),
-        Expanded(
-          child: SingleChildScrollView(
-            child: Column(
-              children: List.generate(
-                  20,
-                  (index) => allClient(
-                        index: index,
-                        context: context,
-                      )),
-            ),
-          ),
-        )
-      ],
-    );
-  }
 
   Widget tabHeader({required BuildContext context}) {
     double space = 10;
@@ -209,14 +203,20 @@ class _TabClient extends StatelessWidget {
           ),
           space.widthBox,
           Expanded(
-            flex: 2,
+            flex: 1,
             child: tabHeaderDetailModel(
               title: 'Nom Complet',
             ),
           ),
           space.widthBox,
           Expanded(
-            flex: 2,
+            flex: 1,
+            child: tabHeaderDetailModel(
+              title: 'Sexe',
+            ),
+          ),
+          Expanded(
+            flex: 1,
             child: tabHeaderDetailModel(
               title: 'Contact',
             ),
@@ -228,78 +228,22 @@ class _TabClient extends StatelessWidget {
               title: 'Adresse',
             ),
           ),
+          Expanded(
+            flex: 1,
+            child: tabHeaderDetailModel(
+              title: 'Email',
+            ),
+          ),
+          space.widthBox,
+          space.widthBox,
+          Expanded(
+            flex: 1,
+            child: tabHeaderDetailModel(
+              title: 'Action',
+            ),
+          ),
           space.widthBox,
         ],
-      ),
-    );
-  }
-
-  Widget allClient({
-    int? index,
-    BuildContext? context,
-  }) {
-    Widget spacer = 15.widthBox;
-    return InkWell(
-      onTap: () {
-        // showDialog(
-        //     context: context,
-        //     barrierColor: Colors.transparent,
-        //     builder: ((context) => const DetailPaiement()));
-      },
-      child: Container(
-        padding: const EdgeInsets.only(
-          left: 60,
-          right: 60,
-          bottom: 15,
-          top: 15,
-        ),
-        width: MediaQuery.of(context!).size.width,
-        decoration: BoxDecoration(
-          color: index! % 2 == 0
-              ? APPSTYLE.DESABLE_COLOR.withOpacity(.4)
-              : Colors.transparent,
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 1,
-              child: clientModel(
-                title: "00${index + 1}",
-              ),
-            ),
-            spacer,
-            Expanded(
-              flex: 2,
-              child: clientModel(title: "Jonh Doe ${index + 1}"),
-            ),
-            spacer,
-            Expanded(
-              flex: 2,
-              child: clientModel(title: "+243 826136191"),
-            ),
-            spacer,
-            Expanded(
-              flex: 1,
-              child: clientModel(title: "Himbi, Alindi n°147"),
-            ),
-            spacer,
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget modelAction({
-    Function()? onTap,
-    IconData? icon,
-    Color? color,
-  }) {
-    return InkWell(
-      onTap: onTap,
-      child: Icon(
-        icon,
-        color: color,
       ),
     );
   }
@@ -310,179 +254,118 @@ class _TabClient extends StatelessWidget {
       style: GoogleFonts.montserrat(
         fontWeight: FontWeight.bold,
         fontSize: 12,
-      ),
-    );
-  }
-
-  Widget clientModel({String? title}) {
-    return Text(
-      title!,
-      overflow: TextOverflow.ellipsis,
-      maxLines: 1,
-      style: GoogleFonts.montserrat(
-        fontSize: 12,
-        color: APPSTYLE.BLACK_COLOR,
-        height: 1.5,
       ),
     );
   }
 }
 
-class _TabHistorique extends StatelessWidget {
-  const _TabHistorique();
+class _TabClient extends StatelessWidget {
+  final int index;
+  final Client client;
+  const _TabClient({
+    required this.client,
+    required this.index,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        tabHeader(context: context),
-        Expanded(
-          child: SingleChildScrollView(
-            child: Column(
-              children: List.generate(
-                  20,
-                  (index) => allClient(
-                        index: index,
-                        context: context,
-                      )),
-            ),
-          ),
-        )
-      ],
-    );
-  }
-
-  Widget tabHeader({required BuildContext context}) {
-    double space = 10;
+    Widget spacer = 15.widthBox;
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 60),
+      padding: const EdgeInsets.only(
+        left: 60,
+        right: 60,
+        bottom: 15,
+        top: 15,
+      ),
       width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(
+        color: index % 2 == 0
+            ? APPSTYLE.DESABLE_COLOR.withOpacity(.4)
+            : Colors.transparent,
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
             flex: 1,
-            child: tabHeaderDetailModel(
-              title: '#Num',
+            child: clientModel(
+              title: "00${index + 1}",
             ),
           ),
-          space.widthBox,
-          Expanded(
-            flex: 2,
-            child: tabHeaderDetailModel(
-              title: 'Nom Complet',
-            ),
-          ),
-          space.widthBox,
-          Expanded(
-            flex: 2,
-            child: tabHeaderDetailModel(
-              title: 'Contact',
-            ),
-          ),
-          space.widthBox,
+          spacer,
           Expanded(
             flex: 1,
-            child: tabHeaderDetailModel(
-              title: 'Adresse',
-            ),
+            child: clientModel(title: "${client.names}"),
           ),
-          space.widthBox,
+          Expanded(
+            flex: 1,
+            child: clientModel(title: "${client.sexe}"),
+          ),
+          spacer,
+          Expanded(
+            flex: 1,
+            child: clientModel(title: "${client.contact}"),
+          ),
+          spacer,
+          Expanded(
+            flex: 1,
+            child: clientModel(title: "${client.address}"),
+          ),
+          spacer,
+          Expanded(
+            flex: 1,
+            child: clientModel(title: "${client.email}"),
+          ),
+          spacer,
+          Expanded(
+              flex: 1,
+              child: Row(
+                children: [
+                  modelAction(
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            barrierColor: Colors.transparent,
+                            builder: ((context) => DetailClient(
+                                  payments: client.payments!,
+                                )));
+                      },
+                      icon: Icons.view_agenda),
+                  spacer,
+                  modelAction(
+                      icon: Icons.print, color: APPSTYLE.PRIMARY_COLOR_DARK),
+                ],
+              )),
+          spacer,
         ],
       ),
     );
   }
+}
 
-  Widget allClient({
-    int? index,
-    BuildContext? context,
-  }) {
-    Widget spacer = 15.widthBox;
-    return InkWell(
-      onTap: () {
-        // showDialog(
-        //     context: context,
-        //     barrierColor: Colors.transparent,
-        //     builder: ((context) => const DetailPaiement()));
-      },
-      child: Container(
-        padding: const EdgeInsets.only(
-          left: 60,
-          right: 60,
-          bottom: 15,
-          top: 15,
-        ),
-        width: MediaQuery.of(context!).size.width,
-        decoration: BoxDecoration(
-          color: index! % 2 == 0
-              ? APPSTYLE.DESABLE_COLOR.withOpacity(.4)
-              : Colors.transparent,
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 1,
-              child: clientModel(
-                title: "00${index + 1}",
-              ),
-            ),
-            spacer,
-            Expanded(
-              flex: 2,
-              child: clientModel(title: "Jonh Doe ${index + 1}"),
-            ),
-            spacer,
-            Expanded(
-              flex: 2,
-              child: clientModel(title: "+243 826136191"),
-            ),
-            spacer,
-            Expanded(
-              flex: 1,
-              child: clientModel(title: "Himbi, Alindi n°147"),
-            ),
-            spacer,
-          ],
-        ),
-      ),
-    );
-  }
+Widget modelAction({
+  Function()? onTap,
+  IconData? icon,
+  Color? color,
+}) {
+  return InkWell(
+    onTap: onTap,
+    child: Icon(
+      icon,
+      color: color,
+    ),
+  );
+}
 
-  Widget modelAction({
-    Function()? onTap,
-    IconData? icon,
-    Color? color,
-  }) {
-    return InkWell(
-      onTap: onTap,
-      child: Icon(
-        icon,
-        color: color,
-      ),
-    );
-  }
-
-  Widget tabHeaderDetailModel({String? title}) {
-    return Text(
-      title!,
-      style: GoogleFonts.montserrat(
-        fontWeight: FontWeight.bold,
-        fontSize: 12,
-      ),
-    );
-  }
-
-  Widget clientModel({String? title}) {
-    return Text(
-      title!,
-      overflow: TextOverflow.ellipsis,
-      maxLines: 1,
-      style: GoogleFonts.montserrat(
-        fontSize: 12,
-        color: APPSTYLE.BLACK_COLOR,
-        height: 1.5,
-      ),
-    );
-  }
+Widget clientModel({String? title}) {
+  return Text(
+    title!,
+    overflow: TextOverflow.ellipsis,
+    maxLines: 1,
+    style: GoogleFonts.montserrat(
+      fontSize: 12,
+      color: APPSTYLE.BLACK_COLOR,
+      height: 1.5,
+    ),
+  );
 }

@@ -26,7 +26,7 @@ class _EditEnginState extends State<EditEngin> {
   AppBloc? bloc;
   String?
       dropDownValue; // this will be removed while we will create the controller view
-  List<String> dropDownValues = ["Voiture", "Bus"];
+  List<String> dropDownValues = ["voiture", "bus"];
   @override
   void initState() {
     bloc = AppBloc();
@@ -40,17 +40,17 @@ class _EditEnginState extends State<EditEngin> {
   }
 
   _submit() {
-    if (dropDownValue == "Voiture") {
-      _enginController.categorie = "1";
+    if (dropDownValue == "voiture") {
       if (_enginController.validation) {
+        _enginController.categorie = 1;
         _enginController.submitPutEngin(bloc!);
       }
       setState(() {
         hasSubmit = true;
       });
-    } else {
-      _enginController.categorie = "2";
+    } else if (dropDownValue == "bus") {
       if (_enginController.validation) {
+        _enginController.categorie = 2;
         _enginController.submitPutEngin(bloc!);
       }
       setState(() {

@@ -28,6 +28,7 @@ class ApiInterceptor extends Interceptor {
           case 409:
             throw ConflictException(err.requestOptions);
           case 500:
+            print(err.response);
             throw InternalServerErrorException(err.requestOptions);
           default:
             throw ValidationInternalServerErrorException(err.requestOptions,

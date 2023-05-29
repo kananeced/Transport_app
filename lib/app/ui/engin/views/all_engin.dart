@@ -104,7 +104,7 @@ class AllEngin extends StatelessWidget {
               left: 220,
               child: modelAction(
                 onTap: () {
-                  selectedIdEngin = engin!.id;
+                  selectedIdEngin = engin!.id.toString();
                   print(selectedIdEngin.toString());
                   showDialog(
                     context: context,

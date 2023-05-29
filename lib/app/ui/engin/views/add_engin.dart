@@ -23,8 +23,8 @@ class _AddEnginState extends State<AddEngin> {
   final EnginController _enginController = EnginController();
   AppBloc? bloc;
   String? dropDownValue =
-      "Voiture"; // this will be removed while we will create the controller view
-  List<String> dropDownValues = ["Voiture", "Bus"];
+      "voiture"; // this will be removed while we will create the controller view
+  List<String> dropDownValues = ["voiture", "bus"];
   @override
   void initState() {
     bloc = AppBloc();
@@ -32,17 +32,17 @@ class _AddEnginState extends State<AddEngin> {
   }
 
   _submit() {
-    if (dropDownValue == "Voiture") {
-      _enginController.categorie = "1";
+    if (dropDownValue == "voiture") {
       if (_enginController.validation) {
+        _enginController.categorie = 1;
         _enginController.submitPostEngin(bloc!);
       }
       setState(() {
         hasSubmit = true;
       });
-    } else {
-      _enginController.categorie = "2";
+    } else if (dropDownValue == "bus") {
       if (_enginController.validation) {
+        _enginController.categorie = 2;
         _enginController.submitPostEngin(bloc!);
       }
       setState(() {

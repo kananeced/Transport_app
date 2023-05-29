@@ -5,5 +5,7 @@ class APIURL {
   static const LOGIN = "$BASE_URL/auth/login";
   //static const LOGIN = "$BASE_URL/login.php";
   static const POSTENGIN = "$BASE_URL/engin";
+  static const PUTENGIN = "$BASE_URL/engin/";
   static const GETENGIN = "$BASE_URL/engin";
+  static const GETCLIENT = "$BASE_URL/historic";
 }

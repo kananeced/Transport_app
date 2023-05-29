@@ -20,12 +20,42 @@ class Login implements AppEvent {
 
 class GETTENGIN implements AppEvent {}
 
+class GETTCLIENT implements AppEvent {}
+
 class POSTENGINS implements AppEvent {
-  final Map<String, dynamic>? data;
-  POSTENGINS({required this.data});
+  String? marque;
+  int? categoryId;
+  String? couleur;
+  String? numeroplaque;
+  String? numerochassie;
+  String? model;
+  double? amount;
+  POSTENGINS({
+    required this.marque,
+    required this.categoryId,
+    required this.couleur,
+    required this.numeroplaque,
+    required this.numerochassie,
+    required this.model,
+    required this.amount,
+  });
 }
 
 class PUTENGINS implements AppEvent {
-  final Map<String, dynamic>? data;
-  PUTENGINS({required this.data});
+  String? marque;
+  int? categoryId;
+  String? couleur;
+  String? numeroplaque;
+  String? numerochassie;
+  String? model;
+  double? amount;
+  PUTENGINS({
+    required this.marque,
+    required this.categoryId,
+    required this.couleur,
+    required this.numeroplaque,
+    required this.numerochassie,
+    required this.model,
+    required this.amount,
+  });
 }

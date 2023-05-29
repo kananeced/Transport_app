@@ -1,12 +1,12 @@
-int? selectedIdEngin;
+String? selectedIdEngin;
 
-class ResultEngin {
+class ResultEngins {
   int? status;
   List<Car>? data;
 
-  ResultEngin({this.status, this.data});
+  ResultEngins({this.status, this.data});
 
-  ResultEngin.fromJson(Map<String, dynamic> json) {
+  ResultEngins.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     if (json['data'] != null) {
       data = <Car>[];
@@ -36,6 +36,7 @@ class Car {
   int? categoryId;
   String? createdAt;
   String? updatedAt;
+  String? amount;
   Category? category;
 
   Car(
@@ -48,6 +49,7 @@ class Car {
       this.categoryId,
       this.createdAt,
       this.updatedAt,
+      this.amount,
       this.category});
 
   Car.fromJson(Map<String, dynamic> json) {
@@ -60,6 +62,7 @@ class Car {
     categoryId = json['category_id'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    amount = json['amount'];
     category =
         json['category'] != null ? Category.fromJson(json['category']) : null;
   }
@@ -75,11 +78,22 @@ class Car {
     data['category_id'] = categoryId;
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
+    data['amount'] = amount;
     if (category != null) {
       data['category'] = category!.toJson();
     }
     return data;
   }
+
+  Map<String, dynamic> toj() => {
+        'marque': marque,
+        'numeroplaque': numeroplaque,
+        'couleur': couleur,
+        'model': model,
+        'numerochassie': numerochassie,
+        'amount': amount,
+        'category_id': categoryId
+      };
 }
 
 class Category {

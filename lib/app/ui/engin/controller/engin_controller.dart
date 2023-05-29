@@ -1,13 +1,16 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
-import 'package:transport_app/app/ui/engin/model/model_engin.dart';
+
 import 'package:transport_app/controller/bloc/bloc.dart';
 import 'package:transport_app/controller/bloc/event.dart';
 
 class EnginController {
-  String? categorie;
+  int? categorie;
   TextEditingController? marque;
   TextEditingController? model;
   String couleurs = "Jaune";
+  double amount = 1000.0;
   TextEditingController? numerochassie;
   TextEditingController? nemeroplaque;
 
@@ -25,36 +28,29 @@ class EnginController {
       nemeroplaque!.text.trim().isNotEmpty;
 
   void submitPostEngin(AppBloc? bloc) {
-    Map<String, dynamic> data = {
-      "marque": marque!.text,
-      "plaque": couleurs,
-      "couleur": nemeroplaque!.text,
-      "model": model!.text,
-      "numerochassie": numerochassie!.text,
-      "categorie_id": int.parse(categorie!)
-    };
-
     bloc!.add(
       POSTENGINS(
-        data: data,
+        amount: amount,
+        categoryId: categorie,
+        couleur: couleurs,
+        marque: marque!.text,
+        model: model!.text,
+        numerochassie: numerochassie!.text,
+        numeroplaque: nemeroplaque!.text,
       ),
     );
   }
 
   void submitPutEngin(AppBloc? bloc) {
-    Map<String, dynamic> data = {
-      "id": selectedIdEngin,
-      "marque": marque!.text,
-      "plaque": couleurs,
-      "couleur": nemeroplaque!.text,
-      "model": model!.text,
-      "numerochassie": numerochassie!.text,
-      "categorie_id": int.parse(categorie!)
-    };
-
     bloc!.add(
-      POSTENGINS(
-        data: data,
+      PUTENGINS(
+        amount: amount,
+        categoryId: categorie,
+        couleur: couleurs,
+        marque: marque!.text,
+        model: model!.text,
+        numerochassie: numerochassie!.text,
+        numeroplaque: nemeroplaque!.text,
       ),
     );
   }
