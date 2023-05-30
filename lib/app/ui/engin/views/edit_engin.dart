@@ -1,10 +1,9 @@
-import 'package:cherry_toast/cherry_toast.dart';
-import 'package:cherry_toast/resources/arrays.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:transport_app/app/ui/engin/controller/engin_controller.dart';
 import 'package:transport_app/app/ui/engin/model/model_engin.dart';
+import 'package:transport_app/app/ui/shared/error_model.dart';
 import 'package:transport_app/app/ui/shared/style.dart';
 import 'package:transport_app/app/ui/shared/utils/pop_up_model.dart';
 import 'package:transport_app/app/ui/shared/widget.dart';
@@ -67,15 +66,7 @@ class _EditEnginState extends State<EditEngin> {
         if (state is SUCCESS) {
           Navigator.pop(context, "success");
         } else if (state is ERROR) {
-          CherryToast.error(
-            title: const Text('Error'),
-            enableIconAnimation: false,
-            displayTitle: false,
-            description: Text(state.dueTo!),
-            animationType: AnimationType.fromRight,
-            animationDuration: const Duration(milliseconds: 1000),
-            autoDismiss: true,
-          ).show(context);
+          errorModel(context, dueTo: state.dueTo!);
         }
       },
       child: BlocBuilder<AppBloc, AppState>(

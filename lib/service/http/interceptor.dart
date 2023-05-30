@@ -1,8 +1,6 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-
 import 'package:transport_app/service/common_error.dart';
 
 @immutable
@@ -26,7 +24,8 @@ class ApiInterceptor extends Interceptor {
           case 404:
             throw NotFoundException(err.requestOptions);
           case 409:
-            throw ConflictException(err.requestOptions);
+            throw ConflictException(err.requestOptions,
+                data: err.response!.data);
           case 500:
             throw InternalServerErrorException(err.requestOptions);
           default:

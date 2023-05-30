@@ -35,7 +35,7 @@ class APPSTYLE {
   static Color SCAFFOLD_BACGROUND_COLOR_LIGH = const Color(0xFFFFFFFF);
   static Color WHITE_COLOR = const Color(0xFFFFFFFF);
   static Color BLACK_COLOR = const Color.fromARGB(255, 0, 0, 0);
-  static Color PRIMARY_COLOR_LIGH = const Color(0xFF059BE9);
+  static Color PRIMARY_COLOR_LIGH = const Color.fromARGB(255, 100, 123, 227);
   static Color DESABLE_COLOR = const Color.fromARGB(113, 214, 214, 214);
   static Color ON_CONTAINER_COLOR = const Color.fromARGB(255, 225, 225, 225);
   static Color SHADOW_COLOR = const Color.fromARGB(172, 236, 236, 236);

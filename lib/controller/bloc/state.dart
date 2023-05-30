@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart' show immutable;
+import 'package:transport_app/service/common_error.dart';
 
 abstract class AppState {}
 
@@ -11,8 +12,7 @@ class SUCCESS implements AppState {
 
 @immutable
 class ERROR implements AppState {
-  final String? dueTo;
-
+  final ErrorData? dueTo;
   const ERROR({this.dueTo});
 }
 

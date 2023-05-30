@@ -4,7 +4,6 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:transport_app/app/ui/client/model/client_model.dart';
 
 import 'package:transport_app/app/ui/shared/style.dart';
-import 'package:velocity_x/velocity_x.dart';
 
 class Carte extends StatelessWidget {
   static String routeName = "/Carte";

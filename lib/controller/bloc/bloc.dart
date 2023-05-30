@@ -10,6 +10,7 @@ import 'package:transport_app/app/ui/login/model/provider/user_repo.dart';
 
 import 'package:transport_app/controller/bloc/event.dart';
 import 'package:transport_app/controller/bloc/state.dart';
+import 'package:transport_app/controller/shared/shared.dart';
 import 'package:transport_app/service/prefs/app_prefs.dart';
 
 class AppBloc extends Bloc<AppEvent, AppState> {
@@ -38,7 +39,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 
           emit(SUCCESS(value: response));
         } on Exception catch (e) {
-          ERROR(dueTo: e.toString());
+          hundleError(e: e, emit: emit);
         }
       },
     );
@@ -55,7 +56,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
           ),
         );
       } on Exception catch (e) {
-        ERROR(dueTo: e.toString());
+        hundleError(e: e, emit: emit);
       }
     });
     on<GETTCLIENT>((event, emit) async {
@@ -71,7 +72,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
           ),
         );
       } on Exception catch (e) {
-        ERROR(dueTo: e.toString());
+        hundleError(e: e, emit: emit);
       }
     });
     on<POSTENGINS>(
@@ -90,7 +91,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 
           emit(const SUCCESS());
         } on Exception catch (e) {
-          ERROR(dueTo: e.toString());
+          hundleError(e: e, emit: emit);
           debugPrint(e.toString());
         }
       },
@@ -110,7 +111,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
           );
           emit(const SUCCESS());
         } on Exception catch (e) {
-          ERROR(dueTo: e.toString());
+          hundleError(e: e, emit: emit);
           debugPrint(e.toString());
         }
       },
