@@ -36,7 +36,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
             ),
           );
           setUserInfo(userPref);
-
           emit(SUCCESS(value: response));
         } on Exception catch (e) {
           hundleError(e: e, emit: emit);

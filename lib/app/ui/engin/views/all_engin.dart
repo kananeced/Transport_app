@@ -78,19 +78,49 @@ class AllEngin extends StatelessWidget {
                       ),
                       10.heightBox,
                       Expanded(
-                        child: Text(
-                          engin!.model!,
-                          maxLines: 3,
-                          overflow: TextOverflow.ellipsis,
-                          style: GoogleFonts.montserrat(
-                            fontSize: 12,
-                          ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "model:",
+                              style: GoogleFonts.montserrat(
+                                fontSize: 12,
+                              ),
+                            ),
+                            Text(
+                              engin!.model!,
+                              style: GoogleFonts.montserrat(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 13,
+                              ),
+                            ),
+                            Text(
+                              "marque:",
+                              style: GoogleFonts.montserrat(
+                                fontSize: 12,
+                              ),
+                            ),
+                            Text(
+                              engin!.marque!,
+                              style: GoogleFonts.montserrat(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 13,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Text(
+                        "Plaque:",
+                        style: GoogleFonts.montserrat(
+                          fontSize: 12,
                         ),
                       ),
                       Text(
                         engin!.numeroplaque!,
                         style: GoogleFonts.montserrat(
-                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
                         ),
                       ),
                       10.heightBox,

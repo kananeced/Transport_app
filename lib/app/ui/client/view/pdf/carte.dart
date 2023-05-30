@@ -4,6 +4,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:transport_app/app/ui/client/model/client_model.dart';
 
 import 'package:transport_app/app/ui/shared/style.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class Carte extends StatelessWidget {
   static String routeName = "/Carte";
@@ -36,47 +37,159 @@ class Carte extends StatelessWidget {
         Expanded(
             child: SizedBox(
           child: Center(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(.5),
-              child: Container(
-                height: 200,
-                width: 300,
-                decoration: BoxDecoration(
-                  border:
-                      Border.all(color: APPSTYLE.BLACK_COLOR.withOpacity(.4)),
-                ),
-                child: Center(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          _model(cle: "Noms", valeur: client?.names),
-                          _model(cle: "Genre", valeur: client?.sexe),
-                          _model(cle: "Contact", valeur: client?.contact),
-                          _model(cle: "E-mail", valeur: client?.email),
-                        ],
-                      ),
-                      Center(
-                        child: SizedBox(
-                          height: 100,
-                          width: 100,
-                          child: QrImage(
-                            foregroundColor: Colors.black,
-                            data:
-                                "${client!.names},${client!.email},${client!.address}",
-                            version: QrVersions.auto,
-                            size: 150,
-                          ),
-                        ),
+            child: Stack(
+              children: [
+                Container(
+                  height: 300,
+                  width: MediaQuery.of(context).size.width / 2.5,
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10),
+                    ),
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                        color: APPSTYLE.BLACK_COLOR.withOpacity(.10),
+                        offset: const Offset(0, 13),
+                        blurRadius: 2,
                       ),
                     ],
+                    image: const DecorationImage(
+                      image: AssetImage("assets/icons/icon.png"),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-              ),
+                Container(
+                  height: 300,
+                  width: MediaQuery.of(context).size.width / 2.5,
+                  decoration: BoxDecoration(
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                        color: Colors.black.withOpacity(.15),
+                        offset: const Offset(0, 5),
+                        blurRadius: 2,
+                      ),
+                    ],
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10),
+                    ),
+                    color: APPSTYLE.WHITE_COLOR.withOpacity(
+                      .7,
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 30,
+                    horizontal: 20,
+                  ),
+                  height: 350,
+                  width: MediaQuery.of(context).size.width / 2.5,
+                  child: Center(
+                    child: Column(
+                      children: [
+                        Center(
+                          child: Text(
+                            "Carte de Transport",
+                            style: GoogleFonts.montserrat(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                _model(cle: "Noms", valeur: client?.names),
+                                _model(cle: "Genre", valeur: client?.sexe),
+                                _model(cle: "Contact", valeur: client?.contact),
+                                _model(cle: "E-mail", valeur: client?.email),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 100,
+                              width: 100,
+                              child: QrImage(
+                                foregroundColor: Colors.black,
+                                data:
+                                    "${client!.names}\n, ${client!.email}\n, ${client!.address}",
+                                version: QrVersions.auto,
+                                size: 150,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Container(
+                          margin: const EdgeInsets.symmetric(vertical: 15),
+                          height: 1,
+                          decoration: const BoxDecoration(
+                            color: Color.fromARGB(255, 100, 100, 100),
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              children: [
+                                Text(
+                                  "Goma Transport",
+                                  style: GoogleFonts.montserrat(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                                10.heightBox,
+                                Text(
+                                  "Av, Alindi Q himbi",
+                                  style: GoogleFonts.montserrat(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13,
+                                  ),
+                                )
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                Text(
+                                  "Groupe3@gmail.com",
+                                  style: GoogleFonts.montserrat(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                                10.heightBox,
+                                Text(
+                                  "+243976829270",
+                                  style: GoogleFonts.montserrat(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                        10.heightBox,
+                        Center(
+                          child: Text(
+                            "les autorites tant civile que militaire et celle de la police nationale sont prie d'apporte leur secour au porte de la presente en cas de neccessite",
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.montserrat(
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ))

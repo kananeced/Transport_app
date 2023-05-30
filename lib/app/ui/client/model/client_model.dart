@@ -1,3 +1,5 @@
+int clientNumber = 0;
+
 class ResultClient {
   int? status;
   List<Client>? data;

@@ -93,7 +93,9 @@ class _AppHomeState extends State<AppHome> {
                       ),
                     ),
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
                       child: Container(
                         padding: const EdgeInsets.symmetric(
                           vertical: 5,

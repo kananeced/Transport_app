@@ -1,8 +1,11 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:transport_app/app/ui/client/model/client_model.dart';
 import 'package:transport_app/app/ui/engin/model/model_engin.dart';
 
 import 'package:transport_app/app/ui/shared/style.dart';
@@ -20,13 +23,20 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   List<Car>? engin = [];
+  List<Client> client = [];
+  var nombrecar;
+  var nombrebus;
   AppBloc? bloc;
+  AppBloc? blocA;
   @override
   void initState() {
     bloc = AppBloc();
     bloc!.add(
       GETTENGIN(),
     );
+    blocA = AppBloc();
+    blocA!.add(GETTCLIENT());
+
     super.initState();
   }
 
@@ -65,21 +75,43 @@ class _DashboardState extends State<Dashboard> {
                               builder: (context, state) {
                                 if (state is SUCCESS) {
                                   engin = state.value;
+
+                                  nombrecar = engin!.count(
+                                      (element) => element.categoryId == 1);
+
+                                  nombrebus = engin!.count(
+                                      (element) => element.categoryId == 2);
+
+                                  return Wrap(
+                                      alignment: WrapAlignment.center,
+                                      spacing: 50,
+                                      runSpacing: 12,
+                                      children: [
+                                        cardDashboard(
+                                            nbrCar: nombrebus!.toString(),
+                                            description: 'des taxis bus',
+                                            icon: Iconsax.car),
+                                        cardDashboard(
+                                            nbrCar: nombrecar!.toString(),
+                                            description: 'des taxis voiture',
+                                            icon: Iconsax.car)
+                                      ]);
+                                }
+
+                                return const SizedBox.shrink();
+                              }),
+                          BlocBuilder<AppBloc, AppState>(
+                              bloc: blocA,
+                              builder: (context, state) {
+                                if (state is SUCCESS) {
+                                  client = state.value;
                                   return cardDashboard(
-                                      nbrCar: '${engin!.length}',
-                                      description: 'des taxis bus',
-                                      icon: Iconsax.car);
+                                      nbrCar: client.length.toString(),
+                                      description: 'des utilisateurs',
+                                      icon: Iconsax.user4);
                                 }
                                 return const SizedBox.shrink();
                               }),
-                          cardDashboard(
-                              nbrCar: '435K',
-                              description: 'des taxis voiture',
-                              icon: Iconsax.car),
-                          cardDashboard(
-                              nbrCar: '435K',
-                              description: 'des utilisateurs',
-                              icon: Iconsax.user4),
                         ],
                       ),
                       const Expanded(child: SizedBox()),
@@ -153,17 +185,32 @@ class _DashboardState extends State<Dashboard> {
                                 10.heightBox,
                                 tabHeaderClient(context: context),
                                 Expanded(
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      children: List.generate(
-                                        6,
-                                        (index) => someClient(
-                                          index: index,
-                                          context: context,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                                  child: BlocBuilder<AppBloc, AppState>(
+                                      bloc: blocA,
+                                      builder: (context, state) {
+                                        if (state is LOADING) {
+                                          return const Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                        } else if (state is SUCCESS) {
+                                          client = state.value;
+
+                                          clientNumber = client.length;
+
+                                          return SingleChildScrollView(
+                                            child: Column(
+                                              children: List.generate(
+                                                client.length,
+                                                (index) => someClient(
+                                                    index: index,
+                                                    context: context,
+                                                    client: client[index]),
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                        return const SizedBox.shrink();
+                                      }),
                                 )
                               ],
                             ),
@@ -435,6 +482,7 @@ class _DashboardState extends State<Dashboard> {
   Widget someClient({
     int? index,
     BuildContext? context,
+    Client? client,
   }) {
     Widget spacer = 15.widthBox;
     return InkWell(
@@ -469,23 +517,23 @@ class _DashboardState extends State<Dashboard> {
             spacer,
             Expanded(
               flex: 2,
-              child: ligneModel(title: "John Doe ${index + 1}"),
+              child: ligneModel(title: client!.names),
             ),
             spacer,
             Expanded(
               flex: 1,
-              child: ligneModel(title: "Masculin"),
+              child: ligneModel(title: client.sexe),
             ),
             spacer,
             Expanded(
               flex: 1,
-              child: ligneModel(title: "+243 826136191"),
+              child: ligneModel(title: client.contact),
             ),
             spacer,
             spacer,
             Expanded(
               flex: 1,
-              child: ligneModel(title: "HIMBI"),
+              child: ligneModel(title: client.address),
             ),
           ],
         ),
@@ -549,4 +597,89 @@ class CustomClipPath extends CustomClipper<Path> {
 
   @override
   bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
+}
+
+class _TabClient extends StatelessWidget {
+  final int index;
+  final Client client;
+  const _TabClient({
+    required this.client,
+    required this.index,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    Widget spacer = 15.widthBox;
+    return Container(
+      padding: const EdgeInsets.only(
+        left: 60,
+        right: 60,
+        bottom: 15,
+        top: 15,
+      ),
+      width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(
+        color: index % 2 == 0
+            ? APPSTYLE.DESABLE_COLOR.withOpacity(.4)
+            : Colors.transparent,
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            flex: 1,
+            child: clientModel(
+              title: "00${index + 1}",
+            ),
+          ),
+          spacer,
+          Expanded(
+            flex: 1,
+            child: clientModel(title: "${client.names}"),
+          ),
+          Expanded(
+            flex: 1,
+            child: clientModel(title: "${client.sexe}"),
+          ),
+          spacer,
+          Expanded(
+            flex: 1,
+            child: clientModel(title: "${client.contact}"),
+          ),
+          spacer,
+          Expanded(
+            flex: 1,
+            child: clientModel(title: "${client.address}"),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+Widget modelAction({
+  Function()? onTap,
+  IconData? icon,
+  Color? color,
+}) {
+  return InkWell(
+    onTap: onTap,
+    child: Icon(
+      icon,
+      color: color,
+    ),
+  );
+}
+
+Widget clientModel({String? title}) {
+  return Text(
+    title!,
+    overflow: TextOverflow.ellipsis,
+    maxLines: 1,
+    style: GoogleFonts.montserrat(
+      fontSize: 12,
+      color: APPSTYLE.BLACK_COLOR,
+      height: 1.5,
+    ),
+  );
 }

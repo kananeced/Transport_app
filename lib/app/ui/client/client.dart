@@ -324,12 +324,14 @@ class _TabClient extends StatelessWidget {
                 children: [
                   modelAction(
                       onTap: () {
-                        showDialog(
-                            context: context,
-                            barrierColor: Colors.transparent,
-                            builder: ((context) => DetailClient(
-                                  payments: client.payments!,
-                                )));
+                        if (client.payments!.isNotEmpty) {
+                          showDialog(
+                              context: context,
+                              barrierColor: Colors.transparent,
+                              builder: ((context) => DetailClient(
+                                    payments: client.payments!,
+                                  )));
+                        }
                       },
                       icon: Icons.view_agenda),
                   spacer,
